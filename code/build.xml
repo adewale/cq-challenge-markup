@@ -1,0 +1,65 @@
+<project name="Delenda" default="compile" basedir=".">
+  <!-- This version number should always point to the _next_ release.-->
+
+  <path id="base.path">
+    	<fileset dir="lib">
+	</fileset>
+  </path>
+
+  <path id="tests.path">
+    <path refid="base.path"/>
+    <fileset dir="lib">
+	  <include name="junit/*.jar"/>
+	</fileset>
+  </path>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="build"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="build"/>
+    <delete dir="${dist}"/>
+  </target>
+  
+  <target name="compile" depends="init">
+    <javac destdir="build"
+	   debug="on">
+      <src path="java"/>
+      <classpath refid="base.path"/>
+    </javac>
+  </target>
+
+  <target name="compile-tests" depends="compile">
+    <javac destdir="build"
+	   debug="on">
+      <src path="unit-tests"/>
+      <src path="functional-tests"/>
+      <classpath refid="tests.path"/>
+    </javac>
+  </target>
+
+  <target name="test" depends="compile-tests" description="Runs both the unit and functional tests">
+    <junit printsummary="yes" haltonfailure="yes" forkmode="perBatch" showoutput="yes" filtertrace="on">
+      <classpath>
+	<path refid="tests.path"/>
+	<pathelement path="build"/>
+      </classpath>
+
+      <formatter type="brief" usefile="false"/>
+
+      <batchtest>
+	<fileset dir="unit-tests">
+	  <include name="**/*Test*.java"/>
+	</fileset>
+	<fileset dir="functional-tests">
+	  <include name="**/*Test*.java"/>
+	</fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+</project>
