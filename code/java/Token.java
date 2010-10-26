@@ -1,5 +1,6 @@
 public class Token {
-	private static final String[] TOKEN_NAMES = {"n/a", "EOF"};
+	public static final int PARA = 2;
+	private static final String[] TOKEN_NAMES = {"n/a", "EOF", "PARA"};
 	private final int type;
 	private final String text;
 	public Token(int type, String text) {
