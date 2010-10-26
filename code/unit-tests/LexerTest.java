@@ -11,15 +11,35 @@ public class LexerTest {
 		Lexer lexer = new Lexer(reader);
 		Token token = lexer.nextToken();
 		
-		assertEquals(new Token(1, "EOF"), token);
+		assertEquals(new Token(Token.EOF, "EOF"), token);
 	}
 	
 	@Test
 	public void lexingParagraphGeneratesParagraphToken() {
+		Reader reader = new StringReader("Paragraph\n\n");
+		Lexer lexer = new Lexer(reader);
+		Token token = lexer.nextToken();
+		
+		assertEquals(new Token(Token.PARA, "Paragraph"), token);
+	}
+	
+	@Test
+	public void lexingParagraphWithEmbeddedSpaceGeneratesSingleParagraphToken() {
 		Reader reader = new StringReader("Paragraph text\n\n");
 		Lexer lexer = new Lexer(reader);
 		Token token = lexer.nextToken();
 		
-		assertEquals(new Token(2, "Paragraph text"), token);
+		assertEquals(new Token(Token.PARA, "Paragraph text"), token);
 	}
+	
+	@Test
+	public void lexingMultiLineParagraphGeneratesParagraphTokensWithSpacesInBetween() {
+		Reader reader = new StringReader("Paragraph1\nParagraph1 continued\n");
+		Lexer lexer = new Lexer(reader);
+		
+		assertEquals(new Token(Token.PARA, "Paragraph1"), lexer.nextToken());
+		assertEquals(new Token(Token.SPACE, " "), lexer.nextToken());
+		assertEquals(new Token(Token.PARA, "Paragraph1 continued"), lexer.nextToken());
+	}
+
 }
