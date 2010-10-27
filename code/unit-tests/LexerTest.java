@@ -42,12 +42,15 @@ public class LexerTest {
 		assertEquals(new Token(Token.PARA, "Paragraph1 continued"), lexer.nextToken());
 	}
 	
-	//ignored
+	@Test
 	public void lexingMultipleParagraphsGeneratesMultipleParagraphTokens() {
 		Reader reader = new StringReader("Paragraph1\n\nParagraph2\n");
 		Lexer lexer = new Lexer(reader);
 		
+		// Note that from the perspective of the lexer there's no difference between 2 paragraphs and 1
+		// multi-line paragraph
 		assertEquals(new Token(Token.PARA, "Paragraph1"), lexer.nextToken());
+		assertEquals(new Token(Token.SPACE, " "), lexer.nextToken());
 		assertEquals(new Token(Token.PARA, "Paragraph2"), lexer.nextToken());
 	}
 
