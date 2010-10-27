@@ -18,4 +18,12 @@ public class Token {
 	public boolean equals(Object obj) {
 		return this.toString().equals(obj.toString());
 	}
+	
+	public static String getTokenName(int type) {
+		return TOKEN_NAMES[type];
+	}
+	
+	public int type() {
+		return type;
+	}
 }

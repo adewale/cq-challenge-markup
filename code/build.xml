@@ -10,6 +10,7 @@
     <path refid="base.path"/>
     <fileset dir="lib">
 	  <include name="junit/*.jar"/>
+	  <include name="jmock/*.jar"/>
 	</fileset>
   </path>
 
@@ -42,7 +43,7 @@
     </javac>
   </target>
 
-  <target name="test" depends="compile-tests" description="Runs both the unit and functional tests">
+   <target name="unittest" depends="compile-tests" description="Runs unit tests">
     <junit printsummary="yes" haltonfailure="yes" forkmode="perBatch" showoutput="yes" filtertrace="on">
       <classpath>
 	<path refid="tests.path"/>
@@ -55,11 +56,28 @@
 	<fileset dir="unit-tests">
 	  <include name="**/*Test*.java"/>
 	</fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <target name="functionaltest" depends="compile-tests" description="Runs functional tests">
+    <junit printsummary="yes" haltonfailure="yes" forkmode="perBatch" showoutput="yes" filtertrace="on">
+      <classpath>
+	<path refid="tests.path"/>
+	<pathelement path="build"/>
+      </classpath>
+
+      <formatter type="brief" usefile="false"/>
+
+      <batchtest>
 	<fileset dir="functional-tests">
 	  <include name="**/*Test*.java"/>
 	</fileset>
       </batchtest>
     </junit>
+  </target>
+
+  <target name="test" depends="unittest,functionaltest" description="Runs both the unit and functional tests">
   </target>
 
 </project>
