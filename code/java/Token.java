@@ -1,8 +1,8 @@
 public class Token {
 	public static final int EOF = 1;
 	public static final int PARA = 2;
-	public static final int SPACE = 3;
-	private static final String[] TOKEN_NAMES = {"n/a", "EOF", "PARA", "SPACE"};
+	public static final int LINE_TERMINATOR = 3;
+	private static final String[] TOKEN_NAMES = {"n/a", "EOF", "PARA", "LINE_TERMINATOR"};
 	private final int type;
 	private final String text;
 	public Token(int type, String text) {
@@ -12,7 +12,7 @@ public class Token {
 	
 	public String toString() {
 		String tokenName = TOKEN_NAMES[this.type];
-		return "<" + this.text + ", " + tokenName +">";
+		return "<[" + this.text + "], " + tokenName +">";
 	}
 	
 	public boolean equals(Object obj) {

@@ -18,7 +18,7 @@ public class Lexer {
 	public Token nextToken() {
 		while (c != EOF) {
 			switch (c) {
-				case '\n': return LINE_ENDING();
+				case '\n': return LINE_TERMINATOR();
 				default: 
 					if (isText()) {
 						return PARA();
@@ -29,10 +29,10 @@ public class Lexer {
 	}
 	
 	private boolean isText() {
-		return !isLineEnding();
+		return !isLineTerminator();
 	}
 
-	private boolean isLineEnding() {
+	private boolean isLineTerminator() {
 		return c == '\n';
 	}
 	
@@ -45,11 +45,10 @@ public class Lexer {
 		return new Token(Token.PARA, builder.toString());
 	}
 
-	private Token LINE_ENDING() {
-		while (c == '\n') {
-			consume();
-		}
-		return new Token(Token.SPACE, " ");
+	private Token LINE_TERMINATOR() {
+		consume();
+		
+		return new Token(Token.LINE_TERMINATOR, "");
 	}
 	
 	private void consume() {
