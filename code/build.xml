@@ -11,6 +11,7 @@
     <fileset dir="lib">
 	  <include name="junit/*.jar"/>
 	  <include name="jmock/*.jar"/>
+	<include name="guava/*.jar"/>
 	</fileset>
   </path>
 
@@ -39,6 +40,7 @@
 	   debug="on">
       <src path="unit-tests"/>
       <src path="functional-tests"/>
+      <src path="acceptance-tests"/>
       <classpath refid="tests.path"/>
     </javac>
   </target>
@@ -71,6 +73,23 @@
 
       <batchtest>
 	<fileset dir="functional-tests">
+	  <include name="**/*Test*.java"/>
+	</fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <target name="acceptancetest" depends="compile-tests" description="Runs acceptance tests">
+    <junit printsummary="yes" haltonfailure="yes" forkmode="perBatch" showoutput="yes" filtertrace="on">
+      <classpath>
+	<path refid="tests.path"/>
+	<pathelement path="build"/>
+      </classpath>
+
+      <formatter type="brief" usefile="false"/>
+
+      <batchtest>
+	<fileset dir="acceptance-tests">
 	  <include name="**/*Test*.java"/>
 	</fileset>
       </batchtest>
