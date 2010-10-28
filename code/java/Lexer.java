@@ -16,7 +16,7 @@ public class Lexer {
 	}
 	
 	public Token nextToken() {
-		while (c != EOF) {
+		while (!isEOF()) {
 			switch (c) {
 				case '\n': return LINE_TERMINATOR();
 				default: 
@@ -29,7 +29,11 @@ public class Lexer {
 	}
 	
 	private boolean isText() {
-		return !isLineTerminator();
+		return !isEOF() && !isLineTerminator();
+	}
+
+	private boolean isEOF() {
+		return c == EOF;
 	}
 
 	private boolean isLineTerminator() {

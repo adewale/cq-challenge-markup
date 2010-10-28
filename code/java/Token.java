@@ -1,8 +1,9 @@
 public class Token {
+	public static final int ROOT = 0;
 	public static final int EOF = 1;
 	public static final int PARA = 2;
 	public static final int LINE_TERMINATOR = 3;
-	private static final String[] TOKEN_NAMES = {"n/a", "EOF", "PARA", "LINE_TERMINATOR"};
+	private static final String[] TOKEN_NAMES = {"ROOT", "EOF", "PARA", "LINE_TERMINATOR"};
 	private final int type;
 	private final String text;
 	public Token(int type, String text) {
@@ -25,5 +26,9 @@ public class Token {
 	
 	public int type() {
 		return type;
+	}
+	
+	public String text() {
+		return text;
 	}
 }

@@ -1,8 +1,10 @@
 public class Parser {
 	private final Lexer input;
+	private final AST ast;
 	private Token lookahead;
 	public Parser(Lexer input) {
 		this.input = input;
+		this.ast = new AST();
 		
 		//lookahead
 		consume();
@@ -22,7 +24,15 @@ public class Parser {
 	
 	public void paragraph() {
 		while (lookahead.type() == Token.PARA || lookahead.type() == Token.LINE_TERMINATOR) {
-			//Do something
+			ast.addChild(new AST(lookahead));
+			consume();
 		}
+	}
+	
+	public AST parse() {
+		ast.addChild(new AST(new Token(Token.ROOT, "")));
+		paragraph();
+		ast.addChild(new AST(new Token(Token.EOF, "")));
+		return ast;
 	}
 }

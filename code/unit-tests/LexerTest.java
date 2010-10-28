@@ -9,18 +9,26 @@ public class LexerTest {
 	public void lexingEmptyReaderGeneratesEofToken() {
 		Reader reader = new StringReader("");
 		Lexer lexer = new Lexer(reader);
-		Token token = lexer.nextToken();
 		
-		assertEquals(new Token(Token.EOF, "EOF"), token);
+		assertEquals(new Token(Token.EOF, "EOF"), lexer.nextToken());
+	}
+	
+	@Test
+	public void repeatedLexingEmptyReaderGeneratesEofToken() {
+		Reader reader = new StringReader("");
+		Lexer lexer = new Lexer(reader);
+		
+		assertEquals(new Token(Token.EOF, "EOF"), lexer.nextToken());
+		assertEquals(new Token(Token.EOF, "EOF"), lexer.nextToken());
+		assertEquals(new Token(Token.EOF, "EOF"), lexer.nextToken());
 	}
 	
 	@Test
 	public void lexingParagraphGeneratesParagraphToken() {
 		Reader reader = new StringReader("Paragraph\n\n");
 		Lexer lexer = new Lexer(reader);
-		Token token = lexer.nextToken();
 		
-		assertEquals(new Token(Token.PARA, "Paragraph"), token);
+		assertEquals(new Token(Token.PARA, "Paragraph"), lexer.nextToken());
 	}
 	
 	@Test
