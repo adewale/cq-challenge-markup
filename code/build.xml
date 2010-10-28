@@ -86,7 +86,7 @@
 	<pathelement path="build"/>
       </classpath>
 
-      <formatter type="brief" usefile="false"/>
+      <formatter type="plain" usefile="false"/>
 
       <batchtest>
 	<fileset dir="acceptance-tests">

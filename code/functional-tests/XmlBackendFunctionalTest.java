@@ -19,7 +19,10 @@ public class XmlBackendFunctionalTest {
 		AST ast = new AST();
 		for (int i = 0; i < 3; i++) {
 			ast.addChild(new AST(new Token(Token.PARA, "" + i)));
+			ast.addChild(new AST(new Token(Token.LINE_TERMINATOR, "")));
+			ast.addChild(new AST(new Token(Token.LINE_TERMINATOR, "")));
 		}
+		ast.addChild(new AST(new Token(Token.EOF, "")));
 		Writer writer = new StringWriter();
 		XmlBackend backend = new XmlBackend(ast, writer);
 		backend.generate();

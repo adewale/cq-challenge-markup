@@ -11,6 +11,8 @@ public class XmlVisitor {
 		switch (ast.tokenType()) {
 			case Token.ROOT: visitRoot(ast); break;
 			case Token.PARA: visitPara(ast); break;
+			case Token.LINE_TERMINATOR: break;
+			case Token.EOF: break;
 			default: throw new RuntimeException("AST with uknown token : " + ast.token());
 		}
 	}
