@@ -35,7 +35,7 @@ public  class AcceptanceTest {
 			testData.add(new String[]{testName});
 		}
 		//TODO(ade) Restrict to first N acceptance tests so that I can see what's going on
-		return testData.subList(0, 4);
+		return testData.subList(0, 5);
 	}
 	
 	@Test
@@ -49,6 +49,7 @@ public  class AcceptanceTest {
 		backend.generate();
 		
 		String xmlFileContents = Files.toString(new File(testFolder, xmlFile), Charset.forName("UTF-8"));
-		assertEquals(name + " failed:", xmlFileContents, writer.toString());
+		String errorMessage = name + " failed: < expected=" + xmlFileContents.toString().length() + " actual=" + writer.toString().length();
+		assertEquals(errorMessage, xmlFileContents, writer.toString());
 	}
 }

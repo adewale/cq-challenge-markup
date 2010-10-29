@@ -41,7 +41,7 @@ public class Parser {
 	}
 	
 	public void paragraph() {
-		System.err.println(lookaheadToken(1) + " : " + lookaheadToken(2) + " : " + lookaheadToken(3));
+		//System.err.println(lookaheadToken(1) + " : " + lookaheadToken(2) + " : " + lookaheadToken(3));
 		//Process all multi-line paragraphs
 		if (lookaheadTokenType(1) == Token.PARA && lookaheadTokenType(2) == Token.LINE_TERMINATOR && lookaheadTokenType(3) == Token.PARA) {
 			StringBuilder builder = new StringBuilder();
@@ -61,7 +61,9 @@ public class Parser {
 		
 		//Process single line paragraphs
 		while (lookaheadTokenType(1) == Token.PARA || lookaheadTokenType(1) == Token.LINE_TERMINATOR) {
-			ast.addChild(new AST(lookaheadToken(1)));
+			if (lookaheadTokenType(1) == Token.PARA) {
+				ast.addChild(new AST(lookaheadToken(1)));
+			}
 			consume();
 		}
 	}
