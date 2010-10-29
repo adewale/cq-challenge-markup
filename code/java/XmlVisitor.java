@@ -22,17 +22,17 @@ public class XmlVisitor {
 		if (children.size() == 1 && children.get(0).tokenType() == Token.EOF) {
 			writer.append("<body/>\n");
 		} else {
-			writer.append("<body>");
+			writer.append("<body>\n");
 			for (AST child : children) {
 				visit(child);
 			}
-			writer.append("</body>");
+			writer.append("</body>\n");
 		}
 	}
 
 	public void visitPara(AST ast) throws IOException {
-		writer.append("<p>");
+		writer.append("    <p>");
 		writer.append(ast.tokenText());
-		writer.append("</p>");
+		writer.append("</p>\n");
 	}	
 }
