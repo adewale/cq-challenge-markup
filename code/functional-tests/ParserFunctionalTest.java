@@ -25,15 +25,41 @@ public class ParserFunctionalTest {
 	}
 	
 	@Test
-	public void generatesCorrectASTForSingleTokenLexer() {
-			Lexer lexer = new Lexer(new StringReader("hello world"));
-			Parser parser = new Parser(lexer);
-			AST actual = parser.parse();
-			
-			AST expected = new AST();
-			expected.addChild(new AST(new Token(Token.ROOT, "")));
-			expected.addChild(new AST(new Token(Token.PARA, "hello world")));
-			expected.addChild(new AST(new Token(Token.EOF, "")));
-			assertEquals(expected, actual);
+	public void generatesASTWithOneParaNodeForSingleTokenLexer() {
+		Lexer lexer = new Lexer(new StringReader("hello world"));
+		Parser parser = new Parser(lexer);
+		AST actual = parser.parse();
+		
+		AST expected = new AST();
+		expected.addChild(new AST(new Token(Token.ROOT, "")));
+		expected.addChild(new AST(new Token(Token.PARA, "hello world")));
+		expected.addChild(new AST(new Token(Token.EOF, "")));
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void generatesASTWithOneParaNodeForMultiLineParagraph() {
+		Lexer lexer = new Lexer(new StringReader("hello\nworld"));
+		Parser parser = new Parser(lexer);
+		AST actual = parser.parse();
+		
+		AST expected = new AST();
+		expected.addChild(new AST(new Token(Token.ROOT, "")));
+		expected.addChild(new AST(new Token(Token.PARA, "hello world")));
+		expected.addChild(new AST(new Token(Token.EOF, "")));
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void generatesASTWithOneParaNodeMultiLineParagraphSpanningSeveralLines() {
+		Lexer lexer = new Lexer(new StringReader("hello.\nworld.\ngalaxy.\nuniverse."));
+		Parser parser = new Parser(lexer);
+		AST actual = parser.parse();
+		
+		AST expected = new AST();
+		expected.addChild(new AST(new Token(Token.ROOT, "")));
+		expected.addChild(new AST(new Token(Token.PARA, "hello. world. galaxy. universe.")));
+		expected.addChild(new AST(new Token(Token.EOF, "")));
+		assertEquals(expected, actual);
 	}
 }
