@@ -4,7 +4,7 @@ public class Parser {
 	private Token lookahead;
 	public Parser(Lexer input) {
 		this.input = input;
-		this.ast = new AST();
+		this.ast = new AST(new Token(Token.ROOT, ""));
 		
 		//lookahead
 		consume();
@@ -30,7 +30,6 @@ public class Parser {
 	}
 	
 	public AST parse() {
-		ast.addChild(new AST(new Token(Token.ROOT, "")));
 		paragraph();
 		ast.addChild(new AST(new Token(Token.EOF, "")));
 		return ast;

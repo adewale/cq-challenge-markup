@@ -20,7 +20,6 @@ public class ParserFunctionalTest {
 		Parser parser = new Parser(lexer);
 		AST actual = parser.parse();
 		AST expected = new AST();
-		expected.addChild(new AST(new Token(Token.ROOT, "")));
 		expected.addChild(new AST(new Token(Token.EOF, "")));
 		assertEquals(expected, actual);
 	}

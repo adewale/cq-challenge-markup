@@ -20,7 +20,7 @@ public class XmlVisitor {
 	public void visitRoot(AST ast) throws IOException {
 		List<AST> children = ast.children();
 		if (children.size() == 1 && children.get(0).tokenType() == Token.EOF) {
-			writer.append("<body/>");
+			writer.append("<body/>\n");
 		} else {
 			writer.append("<body>");
 			for (AST child : children) {

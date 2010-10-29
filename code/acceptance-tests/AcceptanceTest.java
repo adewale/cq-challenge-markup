@@ -1,10 +1,12 @@
 import static org.junit.Assert.*;
 import org.junit.Test;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import com.google.common.io.Files;
 
 @RunWith(Parameterized.class)
 public  class AcceptanceTest {
@@ -25,12 +27,13 @@ public  class AcceptanceTest {
 			}
 		});
 		
-		Collection<String[]> testData = new ArrayList<String[]>();
+		List<String[]> testData = new ArrayList<String[]>();
 		for (String fileName : fileNames) {
 			String testName = fileName.substring(0, fileName.length() - 4);
 			testData.add(new String[]{testName});
 		}
-		return testData;
+		//TODO(ade) Restrict to first N acceptance tests so that I can see what's going on
+		return testData.subList(0, 1);
 	}
 	
 	@Test
@@ -43,5 +46,7 @@ public  class AcceptanceTest {
 		XmlBackend backend = new XmlBackend(ast, writer);
 		backend.generate();
 		
+		String xmlFileContents = Files.toString(new File(testFolder, xmlFile), Charset.forName("UTF-8"));
+		assertEquals(xmlFileContents, writer.toString());
 	}
 }

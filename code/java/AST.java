@@ -3,10 +3,8 @@ import java.util.*;
 public class AST {
 	private final Token token;
 	private final List<AST> children;
-	private boolean isRoot = false;
 	public AST() {
 		this(new Token(Token.ROOT, ""));
-		this.isRoot = true;
 	}
 	
 	public AST(Token token) {
@@ -40,7 +38,7 @@ public class AST {
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		if (isRoot) {
+		if (Token.ROOT == token.type()) {
 			for (AST child : children) {
 				builder.append(child.toString());
 			}

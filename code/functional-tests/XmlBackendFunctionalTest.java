@@ -11,7 +11,7 @@ public class XmlBackendFunctionalTest {
 		XmlBackend backend = new XmlBackend(ast, writer);
 		backend.generate();
 		
-		assertEquals("<body/>", writer.toString());
+		assertEquals("<body/>\n", writer.toString());
 	}
 	
 	@Test
