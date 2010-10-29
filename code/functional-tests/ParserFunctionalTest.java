@@ -51,7 +51,7 @@ public class ParserFunctionalTest {
 	}
 	
 	@Test
-	public void generatesASTWithOneParaNodeMultiLineParagraphSpanningSeveralLines() {
+	public void generatesASTWithOneParaNodeForMultiLineParagraphSpanningSeveralLines() {
 		Lexer lexer = new Lexer(new StringReader("hello.\nworld.\ngalaxy.\nuniverse."));
 		Parser parser = new Parser(lexer);
 		AST actual = parser.parse();
@@ -59,6 +59,20 @@ public class ParserFunctionalTest {
 		AST expected = new AST();
 		expected.addChild(new AST(new Token(Token.ROOT, "")));
 		expected.addChild(new AST(new Token(Token.PARA, "hello. world. galaxy. universe.")));
+		expected.addChild(new AST(new Token(Token.EOF, "")));
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void generatesASTWithMultipleParaNodeForMultiLineParagraphsSpanningSeveralLines() {
+		Lexer lexer = new Lexer(new StringReader("hello.\nworld.\n\ngalaxy.\nuniverse."));
+		Parser parser = new Parser(lexer);
+		AST actual = parser.parse();
+		
+		AST expected = new AST();
+		expected.addChild(new AST(new Token(Token.ROOT, "")));
+		expected.addChild(new AST(new Token(Token.PARA, "hello. world.")));
+		expected.addChild(new AST(new Token(Token.PARA, "galaxy. universe.")));
 		expected.addChild(new AST(new Token(Token.EOF, "")));
 		assertEquals(expected, actual);
 	}

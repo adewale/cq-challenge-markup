@@ -42,29 +42,29 @@ public class Parser {
 	
 	public void paragraph() {
 		//System.err.println(lookaheadToken(1) + " : " + lookaheadToken(2) + " : " + lookaheadToken(3));
-		//Process all multi-line paragraphs
-		if (lookaheadTokenType(1) == Token.PARA && lookaheadTokenType(2) == Token.LINE_TERMINATOR && lookaheadTokenType(3) == Token.PARA) {
-			StringBuilder builder = new StringBuilder();
-			builder.append(lookahead[position].text());
-			consume();//para
-			do {
-				builder.append(" ");
-				match(Token.LINE_TERMINATOR);
-				
-				builder.append(lookahead[position].text());
-				match(Token.PARA);
-			} while (lookaheadTokenType(1) == Token.LINE_TERMINATOR && lookaheadTokenType(2) == Token.PARA);
-			
-			Token multiLinePara = new Token(Token.PARA, builder.toString());
-			ast.addChild(new AST(multiLinePara));
-		}
-		
-		//Process single line paragraphs
 		while (lookaheadTokenType(1) == Token.PARA || lookaheadTokenType(1) == Token.LINE_TERMINATOR) {
-			if (lookaheadTokenType(1) == Token.PARA) {
-				ast.addChild(new AST(lookaheadToken(1)));
+			//Process all multi-line paragraphs
+			if (lookaheadTokenType(1) == Token.PARA && lookaheadTokenType(2) == Token.LINE_TERMINATOR && lookaheadTokenType(3) == Token.PARA) {
+				StringBuilder builder = new StringBuilder();
+				builder.append(lookahead[position].text());
+				consume();//para
+				do {
+					builder.append(" ");
+					match(Token.LINE_TERMINATOR);
+				
+					builder.append(lookahead[position].text());
+					match(Token.PARA);
+				} while (lookaheadTokenType(1) == Token.LINE_TERMINATOR && lookaheadTokenType(2) == Token.PARA);
+			
+				Token multiLinePara = new Token(Token.PARA, builder.toString());
+				ast.addChild(new AST(multiLinePara));
+			} else {
+				//Process single line paragraphs
+				if (lookaheadTokenType(1) == Token.PARA) {
+					ast.addChild(new AST(lookaheadToken(1)));
+				}
+				consume();
 			}
-			consume();
 		}
 	}
 	
