@@ -11,6 +11,7 @@ public class XmlVisitor {
 		switch (ast.tokenType()) {
 			case Token.ROOT: visitRoot(ast); break;
 			case Token.PARA: visitPara(ast); break;
+			case Token.HEADER: visitHeader(ast); break;
 			case Token.LINE_TERMINATOR: break;
 			case Token.EOF: break;
 			default: throw new RuntimeException("AST with uknown token : " + ast.token());
@@ -34,5 +35,11 @@ public class XmlVisitor {
 		writer.append("    <p>");
 		writer.append(ast.tokenText());
 		writer.append("</p>\n");
-	}	
+	}
+	
+	public void visitHeader(AST ast) throws IOException {
+		writer.append("    <h1>");
+		writer.append(ast.tokenText());
+		writer.append("</h1>\n");
+	}
 }

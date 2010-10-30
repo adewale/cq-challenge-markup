@@ -68,8 +68,38 @@ public class Parser {
 		}
 	}
 	
+	public void header() {
+		Token token = lookaheadToken(1);
+		String text = token.text();
+		
+		int index = 0;
+		while (text.charAt(index) == '*') {
+			index++;
+		}
+		
+		//consume the space
+		index++;
+		
+		StringBuilder builder = new StringBuilder();
+		for (;index < text.length(); index++) {
+			builder.append(text.charAt(index));
+		}
+		
+		System.err.println(builder);
+		ast.addChild(new AST(new Token(Token.HEADER, builder.toString())));
+	}
+	
 	public AST parse() {
-		paragraph();
+		while (lookaheadTokenType(1) != Token.EOF) {
+			if (lookaheadTokenType(1) == Token.PARA) {
+				paragraph();
+			}
+			if (lookaheadTokenType(1) == Token.HEADER) {
+				header();
+			}
+			//move forwards until we hit a token we recognize
+			consume();
+		}
 		ast.addChild(new AST(new Token(Token.EOF, "")));
 		return ast;
 	}

@@ -1,0 +1,19 @@
+* 2010-10-29
+Several days after starting on this challenge I've actually read the documentation properly rather than just skimming it.
+One of the good ideas that the instructions.txt suggests is that one should keep a log of the lessons learned during the process of attempting this challenge.
+
+So far we've learned that I don't read documentation as thoroughly as I should.
+The book Language Implementation Patterns has been invaluable during this exercise. Despite Terence Parr's constant suggestions that parser writers should be using Antlr I'm sticking to my approach of doing it all by hand in order to get a better understanding. This may turn out to be a mistake as the complexity of the parser rises.
+
+I'm also trying to see how long I can tolerate writing Java code in Textmate before I switch back to Intellij. So far it's not been as horrible as I remember. I'm having to use things like "javap" to look up documentation since I'm mostly working on this when I'm offline. It's nice to remember that it's possible to code without fancy IDEs and being able to instantly look up things on the internet.
+
+My initial LL(1) parser has become an LL(2) then LL(k), where k currently equals 3, parser in order to properly handle multi-line paragraphs. 
+
+I now have a nice process emerging where I have a failing acceptance test which drives the creation of an appropriate set of functional or  unit tests which drive the implementation of the code that will eventually make the acceptance test pass.
+
+Acceptance test 6 involves parsing headers. I've mostly been aiming to keep the lexer simple and have the parser do all the clever manipulation of the stream of tokens. However the idea of generating 100 sytactically meaningless asterisk tokens required by acceptance test 8 offends me on some aesthetic level.
+
+The options are:
+- Use the current lexer. Emit N asterisk tokens and have the parser count the number of asterisks to work out what kind of header node to use.
+- Lexer with arbitrary lookahead. It would keep processing the asterisks until it had worked out what level of header it was processing. Then it would emit a special header token.
+- Lexer consumes the entire line and emits a normal token with type header. The parser then consumes the asterisks and uses the count to a HeaderNode with a level attribute and the text after the asterisks. This means I have to switch from a homogenous AST to a heterogenous AST.

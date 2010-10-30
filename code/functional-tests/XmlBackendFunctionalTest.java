@@ -29,4 +29,20 @@ public class XmlBackendFunctionalTest {
 		
 		assertEquals("<body>\n    <p>0</p>\n    <p>1</p>\n    <p>2</p>\n</body>\n", writer.toString());
 	}
+	
+	@Test
+	public void generatesHeaderTagPerHeaderToken() {
+		AST ast = new AST();
+		for (int i = 0; i < 3; i++) {
+			ast.addChild(new AST(new Token(Token.HEADER, "header" + i)));
+			ast.addChild(new AST(new Token(Token.LINE_TERMINATOR, "")));
+			ast.addChild(new AST(new Token(Token.LINE_TERMINATOR, "")));
+		}
+		ast.addChild(new AST(new Token(Token.EOF, "")));
+		Writer writer = new StringWriter();
+		XmlBackend backend = new XmlBackend(ast, writer);
+		backend.generate();
+		
+		assertEquals("<body>\n    <h1>header0</h1>\n    <h1>header1</h1>\n    <h1>header2</h1>\n</body>\n", writer.toString());
+	}
 }

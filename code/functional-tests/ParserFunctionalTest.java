@@ -92,4 +92,43 @@ public class ParserFunctionalTest {
 		expected.addChild(new AST(new Token(Token.EOF, "")));
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void generatesHeaderNodeForHeaderWord() {
+		Lexer lexer = new Lexer(new StringReader("* headerword"));
+		Parser parser = new Parser(lexer);
+		AST actual = parser.parse();
+		
+		AST expected = new AST();
+		expected.addChild(new AST(new Token(Token.ROOT, "")));
+		expected.addChild(new AST(new Token(Token.HEADER, "headerword")));
+		expected.addChild(new AST(new Token(Token.EOF, "")));
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void generatesHeaderNodeForHeaderLineOfMultipleWords() {
+		Lexer lexer = new Lexer(new StringReader("* multiple header words"));
+		Parser parser = new Parser(lexer);
+		AST actual = parser.parse();
+		
+		AST expected = new AST();
+		expected.addChild(new AST(new Token(Token.ROOT, "")));
+		expected.addChild(new AST(new Token(Token.HEADER, "multiple header words")));
+		expected.addChild(new AST(new Token(Token.EOF, "")));
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void generatesHeaderNodeForHeaderLineOfMultipleWordsAndEmbeddedAsterisk() {
+		Lexer lexer = new Lexer(new StringReader("* multiple header * words"));
+		Parser parser = new Parser(lexer);
+		AST actual = parser.parse();
+		
+		AST expected = new AST();
+		expected.addChild(new AST(new Token(Token.ROOT, "")));
+		expected.addChild(new AST(new Token(Token.HEADER, "multiple header * words")));
+		expected.addChild(new AST(new Token(Token.EOF, "")));
+		assertEquals(expected, actual);
+	}
 }

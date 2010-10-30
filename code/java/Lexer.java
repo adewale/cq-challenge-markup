@@ -19,6 +19,7 @@ public class Lexer {
 		while (!isEOF()) {
 			switch (c) {
 				case '\n': return LINE_TERMINATOR();
+				case '*': return HEADER();
 				default: 
 					if (isText()) {
 						return PARA();
@@ -53,6 +54,15 @@ public class Lexer {
 		consume();
 		
 		return new Token(Token.LINE_TERMINATOR, "");
+	}
+	
+	private Token HEADER() {
+		StringBuilder builder = new StringBuilder();
+		do {
+			builder.append((char)c);
+			consume();
+		} while (isText());
+		return new Token(Token.HEADER, builder.toString());
 	}
 	
 	private void consume() {

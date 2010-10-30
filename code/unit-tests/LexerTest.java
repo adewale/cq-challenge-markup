@@ -61,4 +61,12 @@ public class LexerTest {
 		assertEquals(new Token(Token.PARA, "Paragraph2"), lexer.nextToken());
 	}
 
+	@Test
+	public void lexingAsteriskGeneratesHeader() {
+		Reader reader = new StringReader("* word\n");
+		Lexer lexer = new Lexer(reader);
+		
+		assertEquals(new Token(Token.HEADER, "* word"), lexer.nextToken());
+	}
+
 }
