@@ -1,5 +1,4 @@
-<project name="Delenda" default="compile" basedir=".">
-  <!-- This version number should always point to the _next_ release.-->
+<project name="Delenda" default="acceptancetest" basedir=".">
 
   <path id="base.path">
     	<fileset dir="lib">
