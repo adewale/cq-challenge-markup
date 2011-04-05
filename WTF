@@ -1,0 +1,12 @@
+Hello. You're probably wondering how you run the tests for this project given that the README file just contains the generic instructions from Code Quarterly.
+
+Do this:
+cd code
+ant
+
+The project uses Ant to build everything. The default target runs all the tests.
+
+Some targets you should know about:
+ant unittest
+ant functionaltest
+ant test (this runs both the unit and functional tests)
