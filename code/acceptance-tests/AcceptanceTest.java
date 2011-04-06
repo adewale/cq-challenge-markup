@@ -35,7 +35,7 @@ public  class AcceptanceTest {
 			testData.add(new String[]{testName});
 		}
 		//TODO(ade) Restrict to first N acceptance tests so that I can see what's going on
-		return testData.subList(0, 6);
+		return testData.subList(0, 7);
 	}
 	
 	@Test

@@ -11,7 +11,6 @@ public class XmlBackend {
 	
 	public void generate() {
 		try {
-			//writer.append("<body/>");
 			XmlVisitor visitor = new XmlVisitor(writer);
 			visitor.visit(ast);
 		} catch (IOException e) {

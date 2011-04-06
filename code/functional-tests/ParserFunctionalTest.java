@@ -131,4 +131,27 @@ public class ParserFunctionalTest {
 		expected.addChild(new AST(new Token(Token.EOF, "")));
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void generatesHeaderNodeWithCorrectTypeForLevelNHeaderLineWithMultipleWords() {
+		for (int i=1; i<=4; i++) {
+			Lexer lexer = new Lexer(new StringReader(makeAsterisks(i) + " multiple header words"));
+			Parser parser = new Parser(lexer);
+			AST actual = parser.parse();
+
+			AST expected = new AST();
+			expected.addChild(new AST(new Token(Token.ROOT, "")));
+			expected.addChild(new AST(new Token(Token.HEADER, "multiple header words"), "H" + i));
+			expected.addChild(new AST(new Token(Token.EOF, "")));
+			assertEquals(expected, actual);
+		}
+	}
+
+	private String makeAsterisks(int numberOfAsterisks) {
+		StringBuilder builder = new StringBuilder();
+		for (int i=0; i<numberOfAsterisks; i++) {
+			builder.append("*");
+		}
+		return builder.toString();
+	}
 }

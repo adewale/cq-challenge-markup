@@ -11,9 +11,10 @@ My initial LL(1) parser has become an LL(2) then LL(k), where k currently equals
 
 I now have a nice process emerging where I have a failing acceptance test which drives the creation of an appropriate set of functional or  unit tests which drive the implementation of the code that will eventually make the acceptance test pass.
 
-Acceptance test 6 involves parsing headers. I've mostly been aiming to keep the lexer simple and have the parser do all the clever manipulation of the stream of tokens. However the idea of generating 100 sytactically meaningless asterisk tokens required by acceptance test 8 offends me on some aesthetic level.
+Acceptance test 6 involves parsing headers. I've mostly been aiming to keep the lexer simple and have the parser do all the clever manipulation of the stream of tokens. However the idea of generating the 100 sytactically meaningless asterisk tokens required by acceptance test 8 offends me on some aesthetic level.
 
 The options are:
 - Use the current lexer. Emit N asterisk tokens and have the parser count the number of asterisks to work out what kind of header node to use.
 - Lexer with arbitrary lookahead. It would keep processing the asterisks until it had worked out what level of header it was processing. Then it would emit a special header token.
-- Lexer consumes the entire line and emits a normal token with type header. The parser then consumes the asterisks and uses the count to a HeaderNode with a level attribute and the text after the asterisks. This means I have to switch from a homogenous AST to a heterogenous AST.
+- Lexer consumes the entire line and emits a normal token with type header. The parser then consumes the asterisks and uses the count to create a HeaderNode with a level attribute and the text after the asterisks. This means I have to switch from a homogenous AST to a heterogenous AST.
+- Lexer consumes the entire line and emits a normal token with type header. The parser then consumes the asterisks and uses the count to emit an AST node with a type field with value "Hn" where n is the number of asterisks. This allows me to keep using a homegenous AST but weakens type safety since sometimes that field won't have useful data.

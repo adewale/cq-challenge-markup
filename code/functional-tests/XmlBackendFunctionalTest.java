@@ -45,4 +45,20 @@ public class XmlBackendFunctionalTest {
 		
 		assertEquals("<body>\n    <h1>header0</h1>\n    <h1>header1</h1>\n    <h1>header2</h1>\n</body>\n", writer.toString());
 	}
+
+	@Test
+	public void generatesHeaderTagWithIncreasingLevelPerAsterisk() {
+		AST ast = new AST();
+		for (int i = 1; i <= 3; i++) {
+			ast.addChild(new AST(new Token(Token.HEADER, "header" + i), "H" + i));
+			ast.addChild(new AST(new Token(Token.LINE_TERMINATOR, "")));
+			ast.addChild(new AST(new Token(Token.LINE_TERMINATOR, "")));
+		}
+		ast.addChild(new AST(new Token(Token.EOF, "")));
+		Writer writer = new StringWriter();
+		XmlBackend backend = new XmlBackend(ast, writer);
+		backend.generate();
+		
+		assertEquals("<body>\n    <h1>header1</h1>\n    <h2>header2</h2>\n    <h3>header3</h3>\n</body>\n", writer.toString());
+	}
 }

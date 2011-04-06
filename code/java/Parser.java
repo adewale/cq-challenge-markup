@@ -41,7 +41,6 @@ public class Parser {
 	}
 	
 	public void paragraph() {
-		//System.err.println(lookaheadToken(1) + " : " + lookaheadToken(2) + " : " + lookaheadToken(3));
 		while (lookaheadTokenType(1) == Token.PARA || lookaheadTokenType(1) == Token.LINE_TERMINATOR) {
 			//Process all multi-line paragraphs
 			if (lookaheadTokenType(1) == Token.PARA && lookaheadTokenType(2) == Token.LINE_TERMINATOR && lookaheadTokenType(3) == Token.PARA) {
@@ -71,14 +70,11 @@ public class Parser {
 	public void header() {
 		Token token = lookaheadToken(1);
 		String text = token.text();
-		
-		int index = 0;
-		while (text.charAt(index) == '*') {
-			index++;
-		}
+				
+		int headerLevel = headerLevel(text);
 		
 		//consume the space
-		index++;
+		int index = headerLevel + 1;
 		
 		StringBuilder builder = new StringBuilder();
 		for (;index < text.length(); index++) {
@@ -86,7 +82,15 @@ public class Parser {
 		}
 		
 		System.err.println(builder);
-		ast.addChild(new AST(new Token(Token.HEADER, builder.toString())));
+		ast.addChild(new AST(new Token(Token.HEADER, builder.toString()), "H" + headerLevel));
+	}
+	
+	private int headerLevel(String text) {
+		int index = 0;
+		while (text.charAt(index) == '*') {
+			index++;
+		}
+		return index;
 	}
 	
 	public AST parse() {
