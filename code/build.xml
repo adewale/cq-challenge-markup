@@ -1,4 +1,4 @@
-<project name="Delenda" default="acceptancetest" basedir=".">
+<project name="Delenda" default="alltest" basedir=".">
 
   <path id="base.path">
     	<fileset dir="lib">
@@ -98,4 +98,6 @@
   <target name="test" depends="unittest,functionaltest" description="Runs both the unit and functional tests">
   </target>
 
+  <target name="alltest" depends="unittest,functionaltest,acceptancetest" description="Runs all the tests">
+  </target>
 </project>

@@ -76,4 +76,13 @@ public class LexerTest {
 		
 		assertEquals(new Token(Token.HEADER, "*** word"), lexer.nextToken());
 	}
+	
+	@Test
+	public void lexingLineStartingWithTwoSpacesGeneratesBlockquoteFollowedByParagraph() {
+		Reader reader = new StringReader("  Word\n");
+		Lexer lexer = new Lexer(reader);
+
+		assertEquals(Token.BLOCKQUOTE, lexer.nextToken().type());
+		assertEquals(new Token(Token.PARA, "Word"), lexer.nextToken());
+	}
 }

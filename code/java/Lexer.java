@@ -20,6 +20,7 @@ public class Lexer {
 			switch (c) {
 				case '\n': return LINE_TERMINATOR();
 				case '*': return HEADER();
+				case ' ': return WHITESPACE();
 				default: 
 					if (isText()) {
 						return PARA();
@@ -63,6 +64,24 @@ public class Lexer {
 			consume();
 		} while (isText());
 		return new Token(Token.HEADER, builder.toString());
+	}
+
+	private Token WHITESPACE() {
+	  //Throw away all the whitespace
+	  //Then delegate token generation to a more specific handler
+		do {
+			consume();
+		} while (isWhiteSpace());
+		
+		return BLOCKQUOTE();
+	}
+
+  private boolean isWhiteSpace() {
+    return c == ' ';
+  }
+
+	private Token BLOCKQUOTE() {
+		return new Token(Token.BLOCKQUOTE, "");
 	}
 	
 	private void consume() {

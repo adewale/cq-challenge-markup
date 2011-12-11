@@ -18,15 +18,15 @@ public class Parser {
 		}
 	}
 	
-	public Token lookaheadToken(int depth) {
+	private Token lookaheadToken(int depth) {
 		return lookahead[(position + depth - 1) % lookaheadDepth];
 	}
 	
-	public int lookaheadTokenType(int depth) {
+	private int lookaheadTokenType(int depth) {
 		return lookaheadToken(depth).type();
 	}
 	
-	public void match(int candidateType) {
+	private void match(int candidateType) {
 		if (lookaheadTokenType(1) == candidateType) {
 			consume();
 		} else {
@@ -34,13 +34,13 @@ public class Parser {
 		}
 	}
 	
-	public void consume() {
+	private void consume() {
 		lookahead[position] = input.nextToken();
 		
 		position = (position + 1) % lookaheadDepth; 
 	}
 	
-	public void paragraph() {
+	private void paragraph(AST parent) {
 		while (lookaheadTokenType(1) == Token.PARA || lookaheadTokenType(1) == Token.LINE_TERMINATOR) {
 			//Process all multi-line paragraphs
 			if (lookaheadTokenType(1) == Token.PARA && lookaheadTokenType(2) == Token.LINE_TERMINATOR && lookaheadTokenType(3) == Token.PARA) {
@@ -56,18 +56,18 @@ public class Parser {
 				} while (lookaheadTokenType(1) == Token.LINE_TERMINATOR && lookaheadTokenType(2) == Token.PARA);
 			
 				Token multiLinePara = new Token(Token.PARA, builder.toString());
-				ast.addChild(new AST(multiLinePara));
+				parent.addChild(new AST(multiLinePara));
 			} else {
 				//Process single line paragraphs
 				if (lookaheadTokenType(1) == Token.PARA) {
-					ast.addChild(new AST(lookaheadToken(1)));
+					parent.addChild(new AST(lookaheadToken(1)));
 				}
 				consume();
 			}
 		}
 	}
 	
-	public void header() {
+	private void header() {
 		Token token = lookaheadToken(1);
 		String text = token.text();
 				
@@ -80,8 +80,7 @@ public class Parser {
 		for (;index < text.length(); index++) {
 			builder.append(text.charAt(index));
 		}
-		
-		System.err.println(builder);
+
 		ast.addChild(new AST(new Token(Token.HEADER, builder.toString()), "H" + headerLevel));
 	}
 	
@@ -93,14 +92,28 @@ public class Parser {
 		return index;
 	}
 	
+	private void blockquote() {
+	  AST blockquote = new AST(lookaheadToken(1));
+	  ast.addChild(blockquote);
+	  consume();
+	  paragraph(blockquote);
+	  
+	} 
+	
 	public AST parse() {
 		while (lookaheadTokenType(1) != Token.EOF) {
+			//The side-effects of the various methods are required so this can't be
+			// easily converted into a switch statement.
 			if (lookaheadTokenType(1) == Token.PARA) {
-				paragraph();
+				paragraph(ast);
 			}
 			if (lookaheadTokenType(1) == Token.HEADER) {
 				header();
 			}
+			if (lookaheadTokenType(1) == Token.BLOCKQUOTE) {
+			  blockquote();
+			}
+			
 			//move forwards until we hit a token we recognize
 			consume();
 		}

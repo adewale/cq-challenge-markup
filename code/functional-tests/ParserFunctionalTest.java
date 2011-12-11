@@ -31,7 +31,6 @@ public class ParserFunctionalTest {
 		AST actual = parser.parse();
 		
 		AST expected = new AST();
-		expected.addChild(new AST(new Token(Token.ROOT, "")));
 		expected.addChild(new AST(new Token(Token.PARA, "hello world")));
 		expected.addChild(new AST(new Token(Token.EOF, "")));
 		assertEquals(expected, actual);
@@ -44,7 +43,6 @@ public class ParserFunctionalTest {
 		AST actual = parser.parse();
 		
 		AST expected = new AST();
-		expected.addChild(new AST(new Token(Token.ROOT, "")));
 		expected.addChild(new AST(new Token(Token.PARA, "hello world")));
 		expected.addChild(new AST(new Token(Token.EOF, "")));
 		assertEquals(expected, actual);
@@ -57,7 +55,6 @@ public class ParserFunctionalTest {
 		AST actual = parser.parse();
 		
 		AST expected = new AST();
-		expected.addChild(new AST(new Token(Token.ROOT, "")));
 		expected.addChild(new AST(new Token(Token.PARA, "hello. world. galaxy. universe.")));
 		expected.addChild(new AST(new Token(Token.EOF, "")));
 		assertEquals(expected, actual);
@@ -70,7 +67,6 @@ public class ParserFunctionalTest {
 		AST actual = parser.parse();
 		
 		AST expected = new AST();
-		expected.addChild(new AST(new Token(Token.ROOT, "")));
 		expected.addChild(new AST(new Token(Token.PARA, "hello. world.")));
 		expected.addChild(new AST(new Token(Token.PARA, "galaxy. universe.")));
 		expected.addChild(new AST(new Token(Token.EOF, "")));
@@ -84,7 +80,6 @@ public class ParserFunctionalTest {
 		AST actual = parser.parse();
 		
 		AST expected = new AST();
-		expected.addChild(new AST(new Token(Token.ROOT, "")));
 		expected.addChild(new AST(new Token(Token.PARA, "hello.")));
 		expected.addChild(new AST(new Token(Token.PARA, "world.")));
 		expected.addChild(new AST(new Token(Token.PARA, "galaxy.")));
@@ -100,7 +95,6 @@ public class ParserFunctionalTest {
 		AST actual = parser.parse();
 		
 		AST expected = new AST();
-		expected.addChild(new AST(new Token(Token.ROOT, "")));
 		expected.addChild(new AST(new Token(Token.HEADER, "headerword")));
 		expected.addChild(new AST(new Token(Token.EOF, "")));
 		assertEquals(expected, actual);
@@ -113,7 +107,6 @@ public class ParserFunctionalTest {
 		AST actual = parser.parse();
 		
 		AST expected = new AST();
-		expected.addChild(new AST(new Token(Token.ROOT, "")));
 		expected.addChild(new AST(new Token(Token.HEADER, "multiple header words")));
 		expected.addChild(new AST(new Token(Token.EOF, "")));
 		assertEquals(expected, actual);
@@ -126,7 +119,6 @@ public class ParserFunctionalTest {
 		AST actual = parser.parse();
 		
 		AST expected = new AST();
-		expected.addChild(new AST(new Token(Token.ROOT, "")));
 		expected.addChild(new AST(new Token(Token.HEADER, "multiple header * words")));
 		expected.addChild(new AST(new Token(Token.EOF, "")));
 		assertEquals(expected, actual);
@@ -140,8 +132,26 @@ public class ParserFunctionalTest {
 			AST actual = parser.parse();
 
 			AST expected = new AST();
-			expected.addChild(new AST(new Token(Token.ROOT, "")));
 			expected.addChild(new AST(new Token(Token.HEADER, "multiple header words"), "H" + i));
+			expected.addChild(new AST(new Token(Token.EOF, "")));
+			assertEquals(expected, actual);
+		}
+	}
+
+	@Test
+	public void generatesBlockquoteNodeGivenIndentedLine() {
+		for (int i=1; i<=4; i++) {
+			Lexer lexer = new Lexer(new StringReader("  Begin the blockquoting."));
+			Parser parser = new Parser(lexer);
+			AST actual = parser.parse();
+
+			AST expected = new AST();
+			
+			//The blockquote is empty. All the content is in the para.
+			AST blockquote = new AST(new Token(Token.BLOCKQUOTE, ""));
+			expected.addChild(blockquote);
+			blockquote.addChild(new AST(new Token(Token.PARA, "Begin the blockquoting.")));
+			
 			expected.addChild(new AST(new Token(Token.EOF, "")));
 			assertEquals(expected, actual);
 		}

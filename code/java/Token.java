@@ -4,7 +4,9 @@ public class Token {
 	public static final int PARA = 2;
 	public static final int LINE_TERMINATOR = 3;
 	public static final int HEADER = 4;
-	private static final String[] TOKEN_NAMES = {"ROOT", "EOF", "PARA", "LINE_TERMINATOR", "HEADER"};
+	public static final int BLOCKQUOTE = 5;
+	private static final String[] TOKEN_NAMES 
+	  = {"ROOT", "EOF", "PARA", "LINE_TERMINATOR", "HEADER", "BLOCKQUOTE"};
 	private final int type;
 	private final String text;
 	public Token(int type, String text) {

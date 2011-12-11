@@ -31,7 +31,7 @@ public class AST {
 	}
 	
 	public boolean hasChildren() {
-		return children.isEmpty();
+		return !children.isEmpty();
 	}
 	
 	public int tokenType() {
@@ -52,16 +52,17 @@ public class AST {
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		if (Token.ROOT == token.type()) {
+		builder.append("<");
+		builder.append(token);
+		builder.append(", ");
+		builder.append(tagName);
+		builder.append(">");
+		
+		if (hasChildren()) {
+			builder.append("\n");
 			for (AST child : children) {
 				builder.append(child.toString());
 			}
-		} else {
-			builder.append("<");
-			builder.append(token);
-			builder.append(", ");
-			builder.append(tagName);
-			builder.append(">");
 		}
 		return builder.toString();
 	}
